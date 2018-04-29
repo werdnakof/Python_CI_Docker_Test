@@ -5,14 +5,25 @@ jobs:
        - image: bpc0081/docker-python-test:latest
      steps:
        - checkout
+       - run: mkdir test-reports
        - run: 
            name: Hello World
            command: |
              echo "hello world"
+      - run:
+          name: Set up virtual enviroment and install requirements
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
        - run:
-          name: Run Test Case
+          name: Run Test Case 1
           command: |
             python test.py
+       - run:
+          name: Run Flask Test Case
+          command: |
+            python test_flask.py
        - store_artifacts:
           path: test-reports/
           destination: tr1
