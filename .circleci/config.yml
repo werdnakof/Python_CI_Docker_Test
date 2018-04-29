@@ -2,15 +2,15 @@ version: 2
 jobs:
    build:
      docker:
-       - image: bpc0081/docker-python-test:latest
+       - image: bpc0081/docker-python-test:v1
      steps:
        - checkout
        - run: mkdir test-reports
-       - run: 
+       - run:
            name: Hello World
            command: |
              echo "hello world"
-      - run:
+       - run:
           name: Set up virtual enviroment and install requirements
           command: |
             python -m venv venv
