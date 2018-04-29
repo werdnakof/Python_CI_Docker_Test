@@ -11,10 +11,14 @@ jobs:
            command: |
              echo "hello world"
        - run:
-          name: Set up virtual enviroment and install requirements
+          name: Set up virtual enviroment 
           command: |
-            python -m venv venv
-            . venv/bin/activate
+            pip install virtualenv
+            virtualenv venv
+            source venv/bin/activate
+       - run:
+          name: Install requirements
+          command: |
             pip install -r requirements.txt
        - run:
           name: Run Test Case 1
