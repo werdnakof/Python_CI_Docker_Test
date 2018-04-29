@@ -1,0 +1,8 @@
+version: 2
+jobs:
+   build:
+     docker:
+       - image: bpc0081/docker-python-test:latest
+     steps:
+       - checkout
+       - run: echo "hello world"
