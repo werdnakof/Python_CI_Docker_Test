@@ -5,4 +5,16 @@ jobs:
        - image: bpc0081/docker-python-test:latest
      steps:
        - checkout
-       - run: echo "hello world"
+       - run: 
+           name: Hello World
+           command: |
+             echo "hello world"
+       - run:
+          name: Run Test Case
+          command: |
+            python test.py
+       - store_artifacts:
+          path: test-reports/
+          destination: tr1
+       - store_test_results:
+          path: test-reports/
