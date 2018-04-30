@@ -61,8 +61,8 @@ workflows:
       - store_test_results:
           requires:
             - run_tests
-      - deploy:
-          requires:
-            - run_tests
+#      - deploy:
+#          requires:
+#            - run_tests
 
 
