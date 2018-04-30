@@ -80,7 +80,7 @@ jobs:
       - run:
           name: Install Docker client
           command: |
-            apt-get update
+            apt-get update -y
             apt-get install curl
             set -x
             VER="17.03.0-ce"
