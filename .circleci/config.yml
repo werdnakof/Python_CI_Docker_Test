@@ -27,6 +27,11 @@ jobs:
           paths:
             - venv
 
+  # requirements.txt are actually pre-installed globally, 
+  # here I am testing with virutal enviroment using circle ci's workspace
+  # I can force a fail test by 1) Not installing the requirements in virtual, 
+  # and 2.) Run tests in virtual i.e. missing flask library
+
   install_required_libraries:
     docker:
       - image: bpc0081/docker-python-test:v1
@@ -65,12 +70,24 @@ jobs:
       - store_test_results:
           path: ~/tmp/test-results
 
-  deploy:
+  deploy-to-docker-repository:
     docker:
       - image: bpc0081/docker-python-test:v1
     steps:
+      - checkout
+      - setup_remote_docker:   # (2)
+          docker_layer_caching: true # (3)
       - run:
-          command: echo Deploying!
+          name: Docker  login
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      # build the application image
+      - run:
+          name: Docker build image
+          command: docker build -t bpc0081/docker-python-test:v1 .
+      # deploy the image
+      - run: 
+          name: Docker push image
+          command: docker push bpc0081/docker-python-test:v1
 
 workflows:
   version: 2
@@ -86,7 +103,7 @@ workflows:
       - run_tests:
           requires:
             - install_required_libraries
-      - deploy:
+      - deploy-to-docker-repository:
           requires:
             - run_tests
 
