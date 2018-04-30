@@ -32,6 +32,8 @@ jobs:
       - image: bpc0081/docker-python-test:v1
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: Enter virtual enviroment
           command: |
