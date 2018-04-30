@@ -5,7 +5,8 @@ jobs:
       - image: bpc0081/docker-python-test:v1
     steps:
       - checkout
-      - run: mkdir ./tmp/test-results
+      - run: mkdir tmp
+      - run: mkdir tmp/test-results
       - persist_to_workspace:
           root: tmp
           paths:
