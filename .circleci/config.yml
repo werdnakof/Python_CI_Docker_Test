@@ -23,7 +23,9 @@ jobs:
             pip install virtualenv
             virtualenv venv
       - persist_to_workspace:
-          root: venv
+          root: /
+          paths:
+            - venv
 
   install_required_libraries:
     docker:
@@ -40,7 +42,9 @@ jobs:
           command: |
             pip install -r requirements.txt
       - persist_to_workspace:
-          root: venv
+          root: /
+          paths:
+            - venv
 
   run_tests:
     docker:
