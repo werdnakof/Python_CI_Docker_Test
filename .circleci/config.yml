@@ -1,35 +1,68 @@
 version: 2
 jobs:
-   build:
-     docker:
-       - image: bpc0081/docker-python-test:v1
-     steps:
-       - checkout
-       - run: mkdir test-reports
-       - run:
-           name: Hello World
-           command: |
-             echo "hello world"
-       - run:
-          name: Set up virtual enviroment 
+  checkout_image:
+    docker:
+      - image: bpc0081/docker-python-test:v1
+    steps:
+      - checkout
+      - run: mkdir /tmp/test-results
+
+  set_up_virtual_enviroment:
+    steps:
+      - run:
+          name: Setting up virtual enviroment 
           command: |
             pip install virtualenv
             virtualenv venv
             source venv/bin/activate
-       - run:
-          name: Install requirements
+
+  install_required_libraries:   
+    steps:
+      - run:
+          name: Installing requirements.txt
           command: |
             pip install -r requirements.txt
-       - run:
+
+  run_tests:
+    steps:
+      - run:
           name: Run Test Case 1
           command: |
             python test.py
-       - run:
+      - run:
           name: Run Flask Test Case
           command: |
             python test_flask.py
-       - store_artifacts:
-          path: test-reports/
-          destination: tr1
-       - store_test_results:
-          path: test-reports/
+
+  store_test_results:
+    steps:
+      - store_test_results:
+          path: /tmp/test-results
+
+  deploy:
+    steps:
+      - run:
+          command: echo Deploying!
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - checkout_image
+      - set_up_virtual_enviroment:
+          requires:
+            - checkout_image
+      - install_required_libraries:
+          requires:
+            - set_up_virtual_enviroment
+      - run_tests:
+          requires:
+            - install_required_libraries
+      - store_test_results:
+          requires:
+            - run_tests
+      - deploy:
+          requires:
+            - run_tests
+
+
