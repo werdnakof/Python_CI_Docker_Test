@@ -60,6 +60,8 @@ jobs:
           path: /tmp/test-results
 
   deploy:
+    docker:
+      - image: bpc0081/docker-python-test:v1
     steps:
       - run:
           command: echo Deploying!
@@ -78,8 +80,8 @@ workflows:
       - run_tests:
           requires:
             - install_required_libraries
-#      - deploy:
-#          requires:
-#            - run_tests
+      - deploy:
+          requires:
+            - run_tests
 
 
