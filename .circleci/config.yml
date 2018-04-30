@@ -76,6 +76,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:   # (2)
+          version: 17.05.0-ce
           docker_layer_caching: true # (3)
       - run:
           name: Docker  login
