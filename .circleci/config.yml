@@ -6,25 +6,48 @@ jobs:
     steps:
       - checkout
       - run: mkdir /tmp/test-results
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - test-results
 
   set_up_virtual_enviroment:
+    docker:
+      - image: bpc0081/docker-python-test:v1
     steps:
+      - checkout
       - run:
           name: Setting up virtual enviroment 
           command: |
             pip install virtualenv
             virtualenv venv
-            source venv/bin/activate
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - venv
 
-  install_required_libraries:   
+  install_required_libraries:
+    docker:
+      - image: bpc0081/docker-python-test:v1
     steps:
+      - checkout
       - run:
-          name: Installing requirements.txt
+          name: Enter virtual enviroment
+          command: |
+            source venv/bin/activate
+          name: Install requirements.txt
           command: |
             pip install -r requirements.txt
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - venv
 
   run_tests:
+    docker:
+      - image: bpc0081/docker-python-test:v1
     steps:
+      - checkout
       - run:
           name: Run Test Case 1
           command: |
@@ -33,9 +56,6 @@ jobs:
           name: Run Flask Test Case
           command: |
             python test_flask.py
-
-  store_test_results:
-    steps:
       - store_test_results:
           path: /tmp/test-results
 
@@ -58,9 +78,6 @@ workflows:
       - run_tests:
           requires:
             - install_required_libraries
-      - store_test_results:
-          requires:
-            - run_tests
 #      - deploy:
 #          requires:
 #            - run_tests
