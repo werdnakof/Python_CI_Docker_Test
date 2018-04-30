@@ -42,6 +42,7 @@ jobs:
           command: |
             pip install -r requirements.txt
       - persist_to_workspace:
+          root: .
           paths:
             - venv
 
