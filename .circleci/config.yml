@@ -5,10 +5,10 @@ jobs:
       - image: bpc0081/docker-python-test:v1
     steps:
       - checkout
-      - run: mkdir tmp
-      - run: mkdir tmp/test-results
+      - run: mkdir ~/tmp
+      - run: mkdir ~/tmp/test-results
       - persist_to_workspace:
-          root: tmp
+          root: ~/tmp
           paths:
             - test-results
 
@@ -33,7 +33,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: venv
+          at: ~/venv
       - run:
           name: Enter virtual enviroment
           command: |
@@ -52,7 +52,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: venv
+          at: ~/venv
       - run:
           name: Run Test Case 1
           command: |
@@ -62,7 +62,7 @@ jobs:
           command: |
             python test_flask.py
       - store_test_results:
-          path: /tmp/test-results
+          path: ~/tmp/test-results
 
   deploy:
     docker:
