@@ -23,7 +23,7 @@ jobs:
             pip install virtualenv
             virtualenv venv
       - persist_to_workspace:
-          root: /
+          root: ~/
           paths:
             - venv
 
@@ -42,7 +42,7 @@ jobs:
           command: |
             pip install -r requirements.txt
       - persist_to_workspace:
-          root: /
+          root: ~/
           paths:
             - venv
 
