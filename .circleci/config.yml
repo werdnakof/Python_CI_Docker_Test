@@ -38,13 +38,14 @@ jobs:
           name: Enter virtual enviroment
           command: |
             source venv/bin/activate
+      - run:
           name: Install requirements.txt
           command: |
             pip install -r requirements.txt
-      - persist_to_workspace:
-          root: .
-          paths:
-            - venv
+#      - persist_to_workspace:
+#          root: .
+#          paths:
+#            - venv
 
   run_tests:
     docker:
